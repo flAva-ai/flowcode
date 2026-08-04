@@ -166,3 +166,4 @@ modifiers like `onlyOwner` that don't need their own Modifier node).
   for `string`/`bytes`/array parameter types, but doesn't know your
   custom struct names, so a struct-typed parameter needs `memory` added
   by hand in its type field (e.g. `Proposal memory`).
+# flava
