@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useRef } from "react";
+import { AlertTriangle, Info } from "lucide-react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -9,6 +10,7 @@ import ReactFlow, {
   type ReactFlowInstance,
 } from "reactflow";
 import { useFlowStore } from "@/lib/flow-store";
+import { getCanvasDiagnostics, isValidCanvasConnection } from "@/lib/graph-validation";
 import type { FlowNodeType } from "@/types/flow";
 import { ContractNode } from "@/components/nodes/ContractNode";
 import { VariableNode } from "@/components/nodes/VariableNode";
@@ -42,6 +44,7 @@ export function FlowCanvas() {
   const instanceRef = useRef<ReactFlowInstance | null>(null);
 
   const defaultEdgeOptions = useMemo(() => ({ style: { strokeWidth: 2 } }), []);
+  const diagnostics = useMemo(() => getCanvasDiagnostics(nodes, edges), [nodes, edges]);
 
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -68,13 +71,15 @@ export function FlowCanvas() {
   );
 
   return (
-    <div ref={wrapperRef} className="flex-1 h-full">
+    <div ref={wrapperRef} className="flex-1 h-full relative">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        isValidConnection={(connection) => isValidCanvasConnection(connection, nodes)}
+        deleteKeyCode={["Backspace", "Delete"]}
         onInit={(instance) => (instanceRef.current = instance)}
         onDrop={onDrop}
         onDragOver={onDragOver}
@@ -99,6 +104,17 @@ export function FlowCanvas() {
           zoomable
         />
       </ReactFlow>
+      {diagnostics.length > 0 && (
+        <aside className="absolute left-3 bottom-3 z-10 max-w-sm rounded-lg border border-[var(--border-hairline)] bg-[var(--bg-surface)]/95 shadow-lg backdrop-blur px-3 py-2.5 space-y-1.5">
+          <div className="text-[10px] font-medium uppercase tracking-wide text-[var(--text-tertiary)]">Canvas checks</div>
+          {diagnostics.slice(0, 3).map((diagnostic, index) => (
+            <div key={`${diagnostic.message}-${index}`} className={`flex gap-1.5 text-[11px] leading-snug ${diagnostic.severity === "error" ? "text-[var(--accent-critical)]" : "text-[var(--text-secondary)]"}`}>
+              {diagnostic.severity === "error" ? <AlertTriangle size={12} className="shrink-0 mt-0.5" /> : <Info size={12} className="shrink-0 mt-0.5 text-[var(--accent-warn)]" />}
+              <span>{diagnostic.message}</span>
+            </div>
+          ))}
+        </aside>
+      )}
     </div>
   );
 }

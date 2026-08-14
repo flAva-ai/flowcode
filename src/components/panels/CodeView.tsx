@@ -125,7 +125,7 @@ export function CodeView() {
               }`}
             >
               <span className="hidden sm:inline">
-                {t === "code" ? "Compiled code" : t}
+                {t === "code" ? "Compiled code" : t === "audit" ? "AI Review" : t}
               </span>
               <span className="sm:hidden">{t === "code" ? "Code" : t}</span>
             </button>
@@ -179,7 +179,7 @@ export function CodeView() {
               ) : (
                 <ShieldCheck size={12} />
               )}
-              Run audit
+              Run AI Review
             </button>
           )}
         </div>
@@ -188,12 +188,20 @@ export function CodeView() {
       {/* content */}
       <div className="flex-1 overflow-auto thin-scroll min-h-0">
         {tab === "code" && (
-          <pre className="text-[12.5px] leading-relaxed font-mono p-4 sm:p-6 whitespace-pre-wrap">
-            <code
-              className="text-[var(--text-secondary)]"
-              dangerouslySetInnerHTML={{ __html: highlighted }}
-            />
-          </pre>
+          <div className="p-4 sm:p-6 space-y-5">
+            <pre className="text-[12.5px] leading-relaxed font-mono whitespace-pre-wrap">
+              <code
+                className="text-[var(--text-secondary)]"
+                dangerouslySetInnerHTML={{ __html: highlighted }}
+              />
+            </pre>
+            <section className="max-w-2xl rounded-xl border border-[var(--border-hairline)] bg-[var(--bg-raised)] p-4">
+              <h2 className="text-[12px] font-medium text-[var(--text-primary)]">Run this contract locally</h2>
+              <p className="mt-1 text-[11.5px] text-[var(--text-secondary)] leading-relaxed">
+                Save to ZIP for a ready-to-run Hardhat project, then run <code className="font-mono">npm install</code> and <code className="font-mono">npx hardhat compile</code>. To use Foundry, place the contract in <code className="font-mono">src/</code>, run <code className="font-mono">forge init</code>, then <code className="font-mono">forge build</code>.
+              </p>
+            </section>
+          </div>
         )}
 
         {tab === "audit" && (
@@ -203,7 +211,7 @@ export function CodeView() {
             )}
             {!auditResult && !auditError && !auditLoading && (
               <p className="text-[12px] text-[var(--text-tertiary)]">
-                Run an audit to get a security and gas review of the compiled code.
+              Run AI Review to get a security and gas review of the compiled code. Treat its suggestions as learning prompts, not a substitute for a professional audit.
               </p>
             )}
             {auditResult && (

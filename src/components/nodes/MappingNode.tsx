@@ -12,6 +12,7 @@ export function MappingNode({ id, data, selected }: NodeProps<MappingNodeData>) 
 
   return (
     <NodeShell
+      id={id}
       kind="mapping"
       icon={<Network size={13} />}
       eyebrow="Mapping"

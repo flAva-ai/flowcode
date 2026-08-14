@@ -13,6 +13,8 @@ interface TopBarProps {
 
 export function TopBar({ onOpenPalette, onOpenAssistant }: TopBarProps) {
   const nodes = useFlowStore((s) => s.nodes);
+  const flowName = useFlowStore((s) => s.flowName);
+  const setFlowName = useFlowStore((s) => s.setFlowName);
 
   function handleClear() {
     useFlowStore.setState({ nodes: [], edges: [] });
@@ -28,9 +30,12 @@ export function TopBar({ onOpenPalette, onOpenAssistant }: TopBarProps) {
           <Menu size={15} />
         </button>
         <div className="min-w-0">
-          <h1 className="text-[13.5px] font-semibold leading-tight truncate">
-            Untitled flow
-          </h1>
+          <input
+            aria-label="Flow name"
+            value={flowName}
+            onChange={(event) => setFlowName(event.target.value)}
+            className="w-full bg-transparent text-[13.5px] font-semibold leading-tight truncate outline-none focus:text-[var(--accent-signal)]"
+          />
           <p className="hidden sm:block text-[10.5px] text-[var(--text-tertiary)] leading-tight truncate">
             {nodes.length} node{nodes.length === 1 ? "" : "s"} · see the Code tab
           </p>

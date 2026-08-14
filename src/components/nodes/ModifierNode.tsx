@@ -19,6 +19,7 @@ export function ModifierNode({ id, data, selected }: NodeProps<ModifierNodeData>
 
   return (
     <NodeShell
+      id={id}
       kind="modifier"
       icon={<Filter size={13} />}
       eyebrow="Modifier"

@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Avalanche AI Flow Builder",
+  title: "AI Flow — Avalanche Contract Builder",
   description:
     "Build, audit, and preview Avalanche smart contracts with a visual node editor.",
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({

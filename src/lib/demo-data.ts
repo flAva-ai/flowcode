@@ -31,7 +31,7 @@ interface DemoAssistantScript {
 const STAKING_SCRIPT: DemoAssistantScript = {
   keywords: ["staking", "stake", "30-day", "30 day", "lock"],
   reply:
-    "Added a StakingVault contract with a 30-day lock: a constant lock period, an unlock-time mapping, a Staked event, an `unlocked` modifier, and stake/constructor functions wired together.",
+    "Added a StakingVault contract with a 30-day lock: a constant lock period, unlock-time mapping, Staked event, `unlocked` modifier, and stake/unstake functions wired together.",
   delayRange: [2200, 3400],
   ops: [
     {
@@ -127,7 +127,24 @@ const STAKING_SCRIPT: DemoAssistantScript = {
         extraModifiers: "",
       },
     },
+    {
+      op: "add_node",
+      tempId: "n8",
+      nodeType: "function",
+      parentId: "n1",
+      data: {
+        name: "unstake",
+        isConstructor: false,
+        visibility: "external",
+        stateMutability: "nonpayable",
+        params: [{ id: "p1", name: "amount", type: "uint256" }],
+        returns: [],
+        body: "_burn(address(this), amount);\n_mint(msg.sender, amount);",
+        extraModifiers: "",
+      },
+    },
     { op: "add_edge", source: "n5", target: "n6" },
+    { op: "add_edge", source: "n5", target: "n8" },
   ],
 };
 

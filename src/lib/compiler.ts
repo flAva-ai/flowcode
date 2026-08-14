@@ -10,6 +10,7 @@ import type {
   StructNodeData,
   VariableNodeData,
 } from "@/types/flow";
+import { getCanvasDiagnostics } from "@/lib/graph-validation";
 
 const KNOWN_IMPORTS: Record<string, string> = {
   ERC20: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
@@ -17,8 +18,8 @@ const KNOWN_IMPORTS: Record<string, string> = {
   ERC1155: "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
   Ownable: "@openzeppelin/contracts/access/Ownable.sol",
   AccessControl: "@openzeppelin/contracts/access/AccessControl.sol",
-  ReentrancyGuard: "@openzeppelin/contracts/security/ReentrancyGuard.sol",
-  Pausable: "@openzeppelin/contracts/security/Pausable.sol",
+  ReentrancyGuard: "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+  Pausable: "@openzeppelin/contracts/utils/Pausable.sol",
 };
 
 function childrenOf(parentId: string, nodes: FlowNode[], edges: FlowEdge[]) {
@@ -72,14 +73,18 @@ export function compileToSolidity(
   const errors: string[] = [];
   const warnings: string[] = [];
 
+  for (const diagnostic of getCanvasDiagnostics(nodes, edges)) {
+    (diagnostic.severity === "error" ? errors : warnings).push(diagnostic.message);
+  }
+
   const contractNodes = nodes.filter((n) => n.type === "contract");
 
   if (contractNodes.length === 0) {
     return {
       code: "// Add a Contract node to the canvas to start generating Solidity.",
       contractName: "",
-      errors: ["No Contract node found on the canvas."],
-      warnings: [],
+      errors: Array.from(new Set([...errors, "No Contract node found on the canvas."])),
+      warnings,
     };
   }
 

@@ -2,6 +2,8 @@
 
 import { Handle, Position } from "reactflow";
 import type { ReactNode } from "react";
+import { X } from "lucide-react";
+import { useFlowStore } from "@/lib/flow-store";
 
 const ACCENT: Record<string, string> = {
   contract: "#e84142",
@@ -15,6 +17,7 @@ const ACCENT: Record<string, string> = {
 };
 
 interface NodeShellProps {
+  id: string;
   kind: keyof typeof ACCENT;
   icon: ReactNode;
   eyebrow: string;
@@ -27,6 +30,7 @@ interface NodeShellProps {
 }
 
 export function NodeShell({
+  id,
   kind,
   icon,
   eyebrow,
@@ -38,6 +42,7 @@ export function NodeShell({
   children,
 }: NodeShellProps) {
   const accent = ACCENT[kind];
+  const removeNode = useFlowStore((state) => state.removeNode);
 
   return (
     <div
@@ -75,6 +80,15 @@ export function NodeShell({
                 {title}
               </div>
             </div>
+            <button
+              type="button"
+              aria-label={`Delete ${title}`}
+              title="Delete node"
+              onClick={() => removeNode(id)}
+              className="nodrag nopan p-1 rounded text-[var(--text-tertiary)] hover:text-[var(--accent-critical)] hover:bg-[var(--bg-raised)]"
+            >
+              <X size={13} />
+            </button>
           </div>
 
           {children}

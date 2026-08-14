@@ -19,6 +19,7 @@ export function StructNode({ id, data, selected }: NodeProps<StructNodeData>) {
 
   return (
     <NodeShell
+      id={id}
       kind="struct"
       icon={<Layers size={13} />}
       eyebrow="Struct"

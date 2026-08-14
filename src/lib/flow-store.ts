@@ -23,6 +23,7 @@ import type {
   VariableNodeData,
 } from "@/types/flow";
 import { TEMPLATES } from "@/lib/templates";
+import { isValidCanvasConnection } from "@/lib/graph-validation";
 
 let idCounter = 0;
 function nextId(prefix: string) {
@@ -100,6 +101,7 @@ export function defaultDataFor(type: FlowNodeType): FlowNodeData {
 }
 
 interface FlowState {
+  flowName: string;
   nodes: FlowNode[];
   edges: FlowEdge[];
   selectedNodeId: string | null;
@@ -113,6 +115,7 @@ interface FlowState {
   updateNodeData: <T>(id: string, data: Partial<T>) => void;
   removeNode: (id: string) => void;
   setSelectedNodeId: (id: string | null) => void;
+  setFlowName: (name: string) => void;
 
   loadTemplate: (templateKey: string) => void;
   applyAssistantOps: (ops: CanvasOp[]) => void;
@@ -141,6 +144,7 @@ function nextPosition(
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
+  flowName: "Untitled flow",
   nodes: [],
   edges: [],
   selectedNodeId: null,
@@ -152,6 +156,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     set({ edges: applyEdgeChanges(changes, get().edges) });
   },
   onConnect: (connection) => {
+    if (!isValidCanvasConnection(connection, get().nodes)) return;
     set({
       edges: addEdge(
         { ...connection, style: { strokeWidth: 2 } },
@@ -192,6 +197,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   },
 
   setSelectedNodeId: (id) => set({ selectedNodeId: id }),
+  setFlowName: (flowName) => set({ flowName }),
 
   loadTemplate: (templateKey) => {
     const template = TEMPLATES.find((t) => t.key === templateKey);

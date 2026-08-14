@@ -11,6 +11,7 @@ export function NoteNode({ id, data, selected }: NodeProps<NoteNodeData>) {
 
   return (
     <NodeShell
+      id={id}
       kind="note"
       icon={<StickyNote size={13} />}
       eyebrow="Note"

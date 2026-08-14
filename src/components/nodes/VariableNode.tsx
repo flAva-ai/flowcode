@@ -12,6 +12,7 @@ export function VariableNode({ id, data, selected }: NodeProps<VariableNodeData>
 
   return (
     <NodeShell
+      id={id}
       kind="variable"
       icon={<Box size={13} />}
       eyebrow="Variable"

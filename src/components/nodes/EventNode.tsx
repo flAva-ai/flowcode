@@ -19,6 +19,7 @@ export function EventNode({ id, data, selected }: NodeProps<EventNodeData>) {
 
   return (
     <NodeShell
+      id={id}
       kind="event"
       icon={<Bell size={13} />}
       eyebrow="Event"

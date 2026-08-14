@@ -17,7 +17,7 @@ export function WalletButton() {
 
   if (!address) {
     return (
-      <div className="flex flex-col items-end">
+      <div className="relative">
         <button
           onClick={connect}
           disabled={connecting}
@@ -29,7 +29,7 @@ export function WalletButton() {
           </span>
         </button>
         {error && (
-          <span className="hidden sm:block text-[9.5px] text-[var(--accent-critical)] mt-1 max-w-[200px] text-right leading-snug">
+          <span className="absolute right-0 top-[calc(100%+6px)] z-50 w-52 rounded-md border border-[var(--accent-critical)]/30 bg-[var(--bg-surface)] px-2 py-1.5 text-[9.5px] text-[var(--accent-critical)] shadow-lg leading-snug">
             {error}
           </span>
         )}

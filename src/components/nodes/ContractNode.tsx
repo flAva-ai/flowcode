@@ -12,6 +12,7 @@ export function ContractNode({ id, data, selected }: NodeProps<ContractNodeData>
 
   return (
     <NodeShell
+      id={id}
       kind="contract"
       icon={<FileCode2 size={13} />}
       eyebrow="Contract"

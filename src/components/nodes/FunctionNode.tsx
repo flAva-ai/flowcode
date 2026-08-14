@@ -19,6 +19,7 @@ export function FunctionNode({ id, data, selected }: NodeProps<FunctionNodeData>
 
   return (
     <NodeShell
+      id={id}
       kind="function"
       icon={<Zap size={13} />}
       eyebrow={data.isConstructor ? "Constructor" : "Function"}
