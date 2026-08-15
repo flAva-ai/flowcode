@@ -1,0 +1,16 @@
+1. Staking Token
+2. Mintable ERC20 Token          
+3. NFT Collection (ERC721)       
+4. Simple Voting         
+5. Escrow         
+6. ETH Vesting Wallet        
+7. Multisig Wallet             
+8. ERC20 Crowdsale / ICO       
+9. ERC1155 Multi-Token      
+10. DAO Governor (on-chain governance)   
+11. Yield Farming / Liquidity Mining.     
+12. NFT Marketplace (list, buy, cancel)   
+13. Token Timelock           
+14. Pausable ERC20 (emergency stop).    
+15. Dutch Auction        
+16. Access Control (role-based permissions)
